@@ -3,6 +3,7 @@ package com.revature.demo.mongodb;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -108,11 +109,23 @@ public class Driver {
 //        System.out.println("------------------------------------");
 
 
+        //Here we delete documents in the collection based on another filter
+        FindIterable<Document> testResults = collection.find(Filters.exists("eyeColor"));
+        collection.deleteOne(Filters.exists("eyeColor"));
+
 
 
         //let's query the collection and print each document.
         FindIterable<Document> results = collection.find(and(exists("firstName"), exists("lastName")));
         results.forEach((thing)-> {System.out.println(thing);});
+
+        collection.deleteMany(new Document());
+
+        System.out.println("---------------------------------------------");
+
+        FindIterable<Document> results2 = collection.find(and(exists("firstName"), exists("lastName")));
+        results2.forEach((thing)-> {System.out.println(thing);});
+
 
 
 
